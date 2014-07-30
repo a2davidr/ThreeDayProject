@@ -1,0 +1,213 @@
+USE [master]
+GO
+/****** Object:  Database [RecipeGuide]    Script Date: 7/30/2014 10:15:45 AM ******/
+CREATE DATABASE [RecipeGuide]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'RecipeGuide', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\RecipeGuide.mdf' , SIZE = 3072KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+ LOG ON 
+( NAME = N'RecipeGuide_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\RecipeGuide_log.ldf' , SIZE = 1024KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+GO
+ALTER DATABASE [RecipeGuide] SET COMPATIBILITY_LEVEL = 120
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [RecipeGuide].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [RecipeGuide] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [RecipeGuide] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [RecipeGuide] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [RecipeGuide] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [RecipeGuide] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [RecipeGuide] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [RecipeGuide] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [RecipeGuide] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [RecipeGuide] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [RecipeGuide] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [RecipeGuide] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [RecipeGuide] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [RecipeGuide] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [RecipeGuide] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [RecipeGuide] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [RecipeGuide] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [RecipeGuide] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [RecipeGuide] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [RecipeGuide] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [RecipeGuide] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [RecipeGuide] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [RecipeGuide] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [RecipeGuide] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [RecipeGuide] SET  MULTI_USER 
+GO
+ALTER DATABASE [RecipeGuide] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [RecipeGuide] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [RecipeGuide] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [RecipeGuide] SET TARGET_RECOVERY_TIME = 0 SECONDS 
+GO
+ALTER DATABASE [RecipeGuide] SET DELAYED_DURABILITY = DISABLED 
+GO
+USE [RecipeGuide]
+GO
+/****** Object:  Table [dbo].[RecipeGuide]    Script Date: 7/30/2014 10:15:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RecipeGuide](
+	[ID] [int] NOT NULL,
+	[Title] [nvarchar](50) NULL,
+	[Author] [nvarchar](50) NULL,
+	[Publisher] [nvarchar](50) NULL,
+	[Copyright] [date] NULL,
+	[Description] [text] NULL,
+	[Price] [smallmoney] NULL,
+ CONSTRAINT [PK_RecipeGuide] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[Ingredient]    Script Date: 7/30/2014 10:15:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Ingredient](
+	[ID] [int] NOT NULL,
+	[Name] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_Ingredient] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[MeasurementType]    Script Date: 7/30/2014 10:15:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[MeasurementType](
+	[ID] [int] NOT NULL,
+	[Name] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_MeasurementType] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[Recipe]    Script Date: 7/30/2014 10:15:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Recipe](
+	[ID] [int] NOT NULL,
+	[Name] [nvarchar](50) NOT NULL,
+	[Nationality] [nvarchar](50) NULL,
+	[IsVegetarian] [bit] NULL,
+	[IsGlutenFree] [int] NULL,
+	[Duration] [int] NULL,
+	[CookTime] [int] NULL,
+	[RecipeTypeID] [int] NULL,
+	[Picture] [image] NULL,
+ CONSTRAINT [PK_Recipe] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[RecipeIngredientJoin]    Script Date: 7/30/2014 10:15:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RecipeIngredientJoin](
+	[RecipeID] [int] NOT NULL,
+	[IngredientID] [int] NOT NULL,
+	[Measurement] [decimal](18, 0) NOT NULL,
+	[MeasurementTypeID] [int] NOT NULL,
+ CONSTRAINT [PK_RecipeIngredientJoin] PRIMARY KEY CLUSTERED 
+(
+	[RecipeID] ASC,
+	[IngredientID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[RecipeType]    Script Date: 7/30/2014 10:15:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RecipeType](
+	[ID] [int] NOT NULL,
+	[Name] [nvarchar](50) NOT NULL,
+	[Description] [text] NULL,
+	[RecipeGuideID] [int] NOT NULL,
+ CONSTRAINT [PK_RecipeType] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+ALTER TABLE [dbo].[Recipe]  WITH CHECK ADD  CONSTRAINT [FK_Recipe_RecipeType] FOREIGN KEY([RecipeTypeID])
+REFERENCES [dbo].[RecipeType] ([ID])
+GO
+ALTER TABLE [dbo].[Recipe] CHECK CONSTRAINT [FK_Recipe_RecipeType]
+GO
+ALTER TABLE [dbo].[RecipeIngredientJoin]  WITH CHECK ADD  CONSTRAINT [FK_RecipeIngredientJoin_Ingredient] FOREIGN KEY([IngredientID])
+REFERENCES [dbo].[Ingredient] ([ID])
+GO
+ALTER TABLE [dbo].[RecipeIngredientJoin] CHECK CONSTRAINT [FK_RecipeIngredientJoin_Ingredient]
+GO
+ALTER TABLE [dbo].[RecipeIngredientJoin]  WITH CHECK ADD  CONSTRAINT [FK_RecipeIngredientJoin_MeasurementType] FOREIGN KEY([MeasurementTypeID])
+REFERENCES [dbo].[MeasurementType] ([ID])
+GO
+ALTER TABLE [dbo].[RecipeIngredientJoin] CHECK CONSTRAINT [FK_RecipeIngredientJoin_MeasurementType]
+GO
+ALTER TABLE [dbo].[RecipeIngredientJoin]  WITH CHECK ADD  CONSTRAINT [FK_RecipeIngredientJoin_Recipe] FOREIGN KEY([RecipeID])
+REFERENCES [dbo].[Recipe] ([ID])
+GO
+ALTER TABLE [dbo].[RecipeIngredientJoin] CHECK CONSTRAINT [FK_RecipeIngredientJoin_Recipe]
+GO
+ALTER TABLE [dbo].[RecipeType]  WITH CHECK ADD  CONSTRAINT [FK_RecipeType_RecipeGuide] FOREIGN KEY([RecipeGuideID])
+REFERENCES [dbo].[RecipeGuide] ([ID])
+GO
+ALTER TABLE [dbo].[RecipeType] CHECK CONSTRAINT [FK_RecipeType_RecipeGuide]
+GO
+USE [master]
+GO
+ALTER DATABASE [RecipeGuide] SET  READ_WRITE 
+GO
